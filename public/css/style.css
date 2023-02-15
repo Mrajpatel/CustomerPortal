@@ -22,5 +22,13 @@
     border-bottom-right-radius: .3rem;
     }
 }
-
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    /* background: #F37A1D;
+   border-top: 3px solid #F37A1D;    */
+  }
 
