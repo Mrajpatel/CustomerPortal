@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 // --------------------------------------------------------------------------------------------------------
 app.engine('.html', require('ejs').__express);
 app.set('views', __dirname + '/views');
+// app.set('nav', __dirname + '/views/navbar.html');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'js')));
 app.set('view engine', 'html');
@@ -31,6 +32,7 @@ app.use(cookieParser());
 // --------------------------------------------------------------------------------------------------------
 var session;
 var user_data = [];
+var currentPage = 'Home';
 
 // Connect to database connection
 var mysql      = require('mysql');
@@ -49,21 +51,38 @@ app.get('/', function(req, res, next){
     if(session.userid){
         // res.send("Welcome User <a href=\'/logout'>click to logout</a>");
         res.redirect('home');
+        currentPage = 'Home';
     }else{
         res.render('login');
+        currentPage = 'Login';
     }
 });
 
 // User Home page redirect
 app.get('/home', function(req, res, next){
     // res.render('home');
+    currentPage = 'Home';
     session=req.session;
     if(session.userid){
         // res.send("Welcome User <a href=\'/logout'>click to logout</a>");
         res.render('home');
+        currentPage = 'Home';
     }else{
         // res.redirect('/');
         res.render('home');
+    }
+});
+
+// User Internet page redirect
+app.get('/internet', function(req, res, next){
+    currentPage = 'Internet';
+    session=req.session;
+    if(session.userid){
+        // res.send("Welcome User <a href=\'/logout'>click to logout</a>");
+        res.render('internet');
+    }else{
+        // res.redirect('/');
+        res.render('internet');
     }
 });
 
@@ -104,6 +123,14 @@ app.post('/verifyLogin', function(req, res){
 app.get('/logout',(req,res) => {
     req.session.destroy();
     res.redirect('/');
+});
+
+app.get('/navbar', function(req, res, next){
+    res.render('navbar', {current_page: currentPage});
+});
+
+app.get('/footer', function(req, res, next){
+    res.render('footer');
 });
 
 // --------------------------------------------------------------------------------------------------------
