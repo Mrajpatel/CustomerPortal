@@ -63,14 +63,39 @@ app.get('/home', function(req, res, next){
     // res.render('home');
     currentPage = 'Home';
     session=req.session;
-    if(session.userid){
-        // res.send("Welcome User <a href=\'/logout'>click to logout</a>");
-        res.render('home');
-        currentPage = 'Home';
-    }else{
-        // res.redirect('/');
-        res.render('home');
-    }
+    var user_info = {};
+    // connection.connect();
+    connection.query(`SELECT * FROM Subscriber 
+                JOIN Equipment ON Equipment.SubscriberId=Subscriber.Id 
+                JOIN PersonalInfo ON Subscriber.PersonalInfoId=PersonalInfo.Id 
+                JOIN Address on Address.Id=PersonalInfo.AddressId 
+            WHERE PortalLogin=? AND PortalPassword=?`, ["test_user", "test123"], 
+        function (error, results, fields) {
+            if (error){
+                console.log("user not found");
+            }else{
+                console.log(results.length);
+                user_data = results;
+                user_info = results[0];
+                if(results.length >0){
+                    if(user_data[0].PortalLogin === req.body.username && user_data[0].PortalPassword === req.body.password){
+                        session=req.session;
+                        session.userid=req.body.username;
+                        console.log(req.session);
+                    }
+                }
+                console.log('The solution is: ', user_info);
+                if(session.userid){
+                    // res.send("Welcome User <a href=\'/logout'>click to logout</a>");
+                    res.render('home', {user: user_info});
+                    currentPage = 'Home';
+                }else{
+                    // res.redirect('/');
+                    res.render('home', {user: user_info});
+                }
+            }
+        }
+    );
 });
 
 // User Internet page redirect
