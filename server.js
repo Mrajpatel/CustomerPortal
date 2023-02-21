@@ -50,7 +50,6 @@ app.get('/', function(req, res, next){
     // res.render('login');
     session=req.session;
     if(session.userid){
-        // res.send("Welcome User <a href=\'/logout'>click to logout</a>");
         res.redirect('home');
         currentPage = 'Home';
     }else{
@@ -106,9 +105,9 @@ var return_obj = {};
 app.get('/internet', function(req, res, next){
     currentPage = 'Internet';
     session=req.session;
-    console.log("RJ-TEST Internet: "+ subId)
+    console.log("RJ-TEST Internet: "+ subId);
     var identifier_list = [];
-    if(!session.userid){
+    if(!session.userid || subId.trim() !== ""){
         (async() =>{
             try{
                 connection.query(`SELECT Equipment.Identifier FROM Subscriber 
@@ -125,31 +124,9 @@ app.get('/internet', function(req, res, next){
                                 identifier_list.push(element.Identifier);
                             });
                             return_obj.identifier_list = identifier_list;
+                            console.log('The solution is T: ', return_obj);
+                            res.render('internet', {user_data: return_obj}); 
                         }
-                        var daily_download = {};
-                        var daily_upload = {};
-                        // return_obj.daily_download = callbackFunction(identifier_list).then();
-                        connection.query(`SELECT Equipment.Identifier, sum(SidHistory.inoctets_delta) as daily_upload, sum(SidHistory.outoctets_delta) as daily_download FROM Subscriber 
-                                        JOIN Equipment ON Equipment.SubscriberId=Subscriber.Id 
-                                        JOIN SidHistory ON Equipment.Identifier=SidHistory.mac 
-                                        WHERE SubId=? GROUP BY Equipment.Identifier`, ["00624767"], 
-                                function (error, results, fields) {
-                                    if (error){
-                                        console.log("user not found");
-                                    }else{
-                                        results.forEach(element => {
-                                            daily_download[element.Identifier] = element.daily_download;
-                                            daily_upload[element.Identifier] = element.daily_upload;
-                                        });
-                                        console.log('The solution in SidHistory: ', daily_download);
-                                    }
-                                    return_obj.daily_download = daily_download;
-                                    return_obj.daily_upload = daily_upload;
-                                    
-                                    console.log('The solution is T: ', return_obj);
-                                    res.render('internet', {user_data: return_obj});   
-                                }
-                        );
                     }
                 )
             }catch(err){
@@ -161,27 +138,43 @@ app.get('/internet', function(req, res, next){
     }
 });
 
-async function callbackFunction(identifier_list){
-    var usage_array_1 = [];
-    connection.query(`SELECT Equipment.Identifier, SidHistory.inoctets_delta as daily_download, SidHistory.outoctets_delta as daily_upload FROM Subscriber 
-                JOIN Equipment ON Equipment.SubscriberId=Subscriber.Id 
-                JOIN SidHistory ON Equipment.Identifier=SidHistory.mac 
-                    WHERE SubId=?`, ["00624767"], 
+app.post('/getUsageData', function(req, res) {
+    var return_data = {}
+    var daily_download = "";
+    var daily_upload = "";
+    var daily_total = "";
+    var mac = req.body.identifier;
+
+    connection.query(`SELECT 
+                        Equipment.Identifier, 
+                        sum(SidHistory.inoctets_delta) as daily_upload, sum(SidHistory.outoctets_delta) as daily_download, 
+                        (sum(SidHistory.inoctets_delta) + sum(SidHistory.outoctets_delta)) as daily_total
+                    FROM Subscriber 
+                    JOIN Equipment ON Equipment.SubscriberId=Subscriber.Id 
+                    JOIN SidHistory ON Equipment.Identifier=SidHistory.mac 
+                    WHERE Equipment.Identifier=? GROUP BY Equipment.Identifier`, [mac], 
             function (error, results, fields) {
                 if (error){
                     console.log("user not found");
                 }else{
                     results.forEach(element => {
-                        usage_array_1.push(element.daily_download);
+                        daily_download = Math.round((element.daily_download/1000000000 + Number.EPSILON) * 100) / 100;
+                        daily_upload = Math.round((element.daily_upload/1000000000 + Number.EPSILON) * 100) / 100;
+                        daily_total = Math.round((element.daily_total/1000000000 + Number.EPSILON) * 100) / 100;
                     });
-                    console.log('The solution in SidHistory: ', usage_array_1);
+                    return_data.identifier = mac;
+                    return_data.daily_download = daily_download === "" ? "0" : daily_download;
+                    return_data.daily_upload = daily_upload === "" ? "0" : daily_upload;
+                    return_data.daily_total = daily_total === "" ? "0" : daily_total;
+                    
+                    console.log('The Data from getDataUsage: ', return_data);
+                    res.send({user_data: return_data});   
                 }
                 
             }
-        
     );
-    return usage_array_1;
-}
+});
+
 // Handling request for Login
 // var jsonParser = bodyParser.json();
 app.post('/verifyLogin', function(req, res){
