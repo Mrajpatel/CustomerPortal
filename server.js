@@ -138,7 +138,58 @@ app.get('/internet', function(req, res, next){
     }
 });
 
+// getUsageData
 app.post('/getUsageData', function(req, res) {
+    var return_data = {}
+    var daily_download = "";
+    var daily_upload = "";
+    var daily_total = "";
+    var this_month_download = "";
+    var this_month_upload = "";
+    var this_month_total = "";
+    var mac = req.body.identifier;
+
+    connection.query(`SELECT 
+                        Equipment.Identifier, 
+                        sum(SidHistory.inoctets_delta) as daily_upload, sum(SidHistory.outoctets_delta) as daily_download, 
+                        (sum(SidHistory.inoctets_delta) + sum(SidHistory.outoctets_delta)) as daily_total,
+                        sum(SidHistoryDaily.inoctets) as this_month_upload, sum(SidHistoryDaily.outoctets) as this_month_download, 
+                        (sum(SidHistoryDaily.inoctets) + sum(SidHistoryDaily.outoctets)) as this_month_total
+                    FROM Subscriber 
+                    JOIN Equipment ON Equipment.SubscriberId=Subscriber.Id 
+                    JOIN SidHistory ON Equipment.Identifier=SidHistory.mac 
+                    JOIN SidHistoryDaily on SidHistoryDaily.mac=Equipment.Identifier
+                    WHERE Equipment.Identifier=? GROUP BY Equipment.Identifier`, [mac], 
+            function (error, results, fields) {
+                if (error){
+                    console.log("user not found");
+                }else{
+                    results.forEach(element => {
+                        daily_download = Math.round((element.daily_download/1000000000 + Number.EPSILON) * 100) / 100;
+                        daily_upload = Math.round((element.daily_upload/1000000000 + Number.EPSILON) * 100) / 100;
+                        daily_total = Math.round((element.daily_total/1000000000 + Number.EPSILON) * 100) / 100;
+                        this_month_download = Math.round((element.this_month_download/1000000000 + Number.EPSILON) * 100) / 100;
+                        this_month_upload = Math.round((element.this_month_upload/1000000000 + Number.EPSILON) * 100) / 100;
+                        this_month_total = Math.round((element.this_month_total/1000000000 + Number.EPSILON) * 100) / 100;
+                    });
+                    return_data.identifier = mac;
+                    return_data.daily_download = daily_download === "" ? "0" : daily_download;
+                    return_data.daily_upload = daily_upload === "" ? "0" : daily_upload;
+                    return_data.daily_total = daily_total === "" ? "0" : daily_total;
+                    return_data.this_month_download = this_month_download === "" ? "0" : this_month_download;
+                    return_data.this_month_upload = this_month_upload === "" ? "0" : this_month_upload;
+                    return_data.this_month_total = this_month_total === "" ? "0" : this_month_total;
+                    
+                    console.log('The Data from getDataUsage: ', return_data);
+                    res.send({user_data: return_data});   
+                }
+                
+            }
+    );
+});
+
+// getMonthlyUsageData
+app.post('/getMonthlyUsageData', function(req, res) {
     var return_data = {}
     var daily_download = "";
     var daily_upload = "";

@@ -48,7 +48,7 @@
                         }
                     </script>
                     <hr class="d-sm-none">
-                    <table class="table ">
+                    <table class="table">
                         <thead>
                         <tr>
                             <th>Data Usage Today</th>
@@ -70,10 +70,40 @@
                             </tr>
                         </tbody>
                     </table>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Data Usage This Month</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Upload (GB): </td>
+                                <td id="this_month_upload">213</td>
+                            </tr>
+                            <tr>
+                                <td>Download (GB): </td>
+                                <td id="this_month_download">321</td>
+                            </tr>
+                            <tr>
+                                <td>Total (GB): </td>
+                                <td id="this_month_total">534</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="col-sm-8">
+                <div class="col-sm-8" style="vertical-align:middle;">
                     <h3><br></h3>
-                    <canvas id="dataUsage" style="max-width: 100%;"></canvas>
+                    <canvas id="dataUsage" style="max-width: 100%; align-self: center;"></canvas>
+                    <h3><br></h3>
+                    <!-- <canvas id="dataUsage" style="max-width: 100%; align-self: center;"></canvas> -->
+                    <canvas id="totalDataUsage" 
+                        chart-data="data" 
+                        chart-labels="labels" 
+                        chart-options="mainDonut" 
+                        class="chart chart-doughnut"
+                        style="max-width: 40%; align-self: center;"></canvas>
                 </div>
             </div>
         </div>
@@ -86,40 +116,7 @@
                 updateEquipmentData();
             });
 
-            var ctx = document.getElementById("dataUsage").getContext('2d');
-            var myLineChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: [1500, 1600, 1700, 1750, 1800, 1850, 1900, 1950, 1999, 2050],
-                        datasets: [{
-                            data: [86, 114, 106, 106, 107, 111, 133, 221, 783, 2478],
-                            label: "Africa",
-                            borderColor: "#458af7",
-                            backgroundColor:'#458af7',
-                            fill: false
-                        }, {
-                            data: [282, 350, 411, 502, 635, 809, 947, 1402, 3700, 5267],
-                            label: "Asia",
-                            borderColor: "#8e5ea2",
-                            fill: true,
-                            backgroundColor:'#8e5ea2'
-                            
-                        }, {
-                            data: [168, 170, 178, 190, 203, 276, 408, 547, 675, 734],
-                            label: "Europe",
-                            borderColor: "#3cba9f",
-                            fill: false,
-                            backgroundColor:'#3cba9f'
-                            
-                        }]
-                    },
-                    options: {
-                        title: {
-                            display: true,
-                            text: 'World population per region (in millions)'
-                        }
-                    }
-                });
+            
         </script>
         <div class="footer" id="footer-placeholder"></div>
     </body>
