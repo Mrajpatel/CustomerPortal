@@ -36,10 +36,10 @@ function updateEquipmentData(){
 function displayTotalChart(upload, download, limit){
     //doughnut
     var ctxD = document.getElementById("totalDataUsage").getContext('2d');
-    var myLineChart = new Chart(ctxD, {
+    var myDoughNutChart = new Chart(ctxD, {
         type: 'doughnut',
         data: {
-        labels: ["Download", "Upload", "Usage Left"],
+        labels: ["Download", "Upload", "Data Left"],
         datasets: [{
             data: [download, upload, limit-(upload+download)],
             backgroundColor: ["#3687de", "#46BFBD", "#b1b4b8", "#949FB1", "#4D5360"],
@@ -47,6 +47,10 @@ function displayTotalChart(upload, download, limit){
         }]
         },
         options: {
+            title: {
+                display: true,
+                text: 'Total Usage'
+            },
             responsive: true,
             cutoutPercentage: 80
         }
@@ -55,7 +59,7 @@ function displayTotalChart(upload, download, limit){
 
 function displayChart(dataType){
     var ctx = document.getElementById("dataUsage").getContext('2d');
-    var myLineChart = new Chart(ctx, {
+    var myBarChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: ['Jan', 'Feb', 'March', 'April', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
@@ -84,7 +88,7 @@ function displayChart(dataType){
             options: {
                 title: {
                     display: true,
-                    text: 'Monthly Usage'
+                    text: 'Usage History'
                 }
             }
         });

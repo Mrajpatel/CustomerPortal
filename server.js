@@ -227,7 +227,6 @@ app.post('/getMonthlyUsageData', function(req, res) {
 });
 
 // Handling request for Login
-// var jsonParser = bodyParser.json();
 app.post('/verifyLogin', function(req, res){
     console.log(req.body);
     // res.send(req.body);    // echo the result back
@@ -280,32 +279,3 @@ var server = app.listen(3000, function () {
     var port = server.address().port;
     console.log('listening on http://'+host+':'+port+'/');
 });
-
-function getSubData(username, password){
-    var user_info = {};
-    connection.query(`SELECT * FROM Subscriber 
-                            JOIN Equipment ON Equipment.SubscriberId=Subscriber.Id 
-                            JOIN PersonalInfo ON Subscriber.PersonalInfoId=PersonalInfo.Id 
-                            JOIN Address on Address.Id=PersonalInfo.AddressId 
-                        WHERE PortalLogin=? AND PortalPassword=?`, [username, password], 
-        function (error, results, fields) {
-            if (error){
-                console.log("user not found");
-            }else{
-                console.log(results.length);
-                user_data = results;
-                user_info = results[0];
-                return user_info;
-                // if(results.length >0){
-                //     if(user_data[0].PortalLogin === req.body.username && user_data[0].PortalPassword === req.body.password){
-                //         session=req.session;
-                //         session.userid=req.body.username;
-                //         console.log(req.session);
-                //     }
-                // }
-                // console.log('The solution is: ', results[0]);
-                // res.send({message: "From Node Login", success: results.length});
-            }
-        }
-    );
-}

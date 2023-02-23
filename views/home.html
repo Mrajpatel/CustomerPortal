@@ -19,18 +19,16 @@
         <div id="nav-placeholder"></div>
 
 
-        <div class="container" style="margin-top:30px">
+        <div class="container" style="margin-top:30px; max-height: auto;">
             <div class="row">
                 <div class="col-sm-4">
                     <h2>Welcome, 
                         <%= user.FirstName %>!</h2>
-                    <!-- <div class="fakeimg">Fake Image</div>
-                    <p>Some text about me in culpa qui officia deserunt mollit anim..</p> -->
                     <hr class="d-sm-none">
                 </div>
                 <div class="col-sm-8">
                     <h3 class="text-primary">Subscriber Information</h3>
-                    <table class="table ">
+                    <table class="table" style="max-width: auto;">
                         <thead>
                         <tr>
                             <th>Full Name: </th>
@@ -75,7 +73,8 @@
         
         
         
-        <div class="footer" id="footer-placeholder"></div>
+        <div class="footer jumbotron text-center"  id="footer-placeholder"  style="margin-bottom:0"></div>
+        
         <script>
             $(function(){
                 $("#nav-placeholder").load("/navbar");
