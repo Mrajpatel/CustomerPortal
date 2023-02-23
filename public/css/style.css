@@ -23,12 +23,17 @@
     }
 }
 .footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    /* Set the fixed height of the footer here */
-    height: 60px;
-    /* background: #F37A1D;
-   border-top: 3px solid #F37A1D;    */
-  }
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height:100px;   /* Height of the footer */
+    /* background:#6cf; */
+    margin-bottom: 0px;
+}
 
+html,
+body {
+    margin:0;
+    padding:0;
+    height:100%;
+}
