@@ -31,6 +31,23 @@ function updateEquipmentData(){
             console.log('Error: ' + error.message);
         },
     });
+
+    $.ajax({
+        url: '/getMonthlyUsageData',
+        type: 'POST',
+        data: {
+            identifier: mac
+        },
+        // jsonpCallback: 'callback', // this is not relevant to the POST anymore
+        success: function (result) {
+            console.log(result)
+        },
+        error: function (xhr, status, error) {
+            console.log('Error: ' + error.message);
+        },
+    });
+
+    
 }
 
 function displayTotalChart(upload, download, limit){
