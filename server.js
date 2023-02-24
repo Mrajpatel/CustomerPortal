@@ -191,32 +191,39 @@ app.post('/getUsageData', function(req, res) {
 // getMonthlyUsageData
 app.post('/getMonthlyUsageData', function(req, res) {
     var return_data = {}
-    var daily_download = "";
-    var daily_upload = "";
-    var daily_total = "";
+    var download = [];
+    var upload = [];
+    var total = [];
+    var month = [];
     var mac = req.body.identifier;
 
-    connection.query(`SELECT 
-                        Equipment.Identifier, 
-                        sum(SidHistory.inoctets_delta) as daily_upload, sum(SidHistory.outoctets_delta) as daily_download, 
-                        (sum(SidHistory.inoctets_delta) + sum(SidHistory.outoctets_delta)) as daily_total
-                    FROM Subscriber 
-                    JOIN Equipment ON Equipment.SubscriberId=Subscriber.Id 
-                    JOIN SidHistory ON Equipment.Identifier=SidHistory.mac 
-                    WHERE Equipment.Identifier=? GROUP BY Equipment.Identifier`, [mac], 
+    connection.query(`SELECT inoctets as upload, outoctets as download, mac, time_id, Month(time_id) as month from SidHistoryMonthly 
+                        WHERE mac=? 
+                        ORDER BY time_id desc limit 12`, [mac], 
             function (error, results, fields) {
                 if (error){
                     console.log("user not found");
                 }else{
                     results.forEach(element => {
-                        daily_download = Math.round((element.daily_download/1000000000 + Number.EPSILON) * 100) / 100;
-                        daily_upload = Math.round((element.daily_upload/1000000000 + Number.EPSILON) * 100) / 100;
-                        daily_total = Math.round((element.daily_total/1000000000 + Number.EPSILON) * 100) / 100;
+                        // console.log(element);
+                        download.push(Math.round((element.download/1000000000 + Number.EPSILON) * 100) / 100);
+                        upload.push(Math.round((element.upload/1000000000 + Number.EPSILON) * 100) / 100);
+                        total.push(Math.round(((element.download+element.upload)/1000000000 + Number.EPSILON) * 100) / 100);
+                        month.push(element.month)
+                        
+                        // var download = Math.round((element.download/1000000000 + Number.EPSILON) * 100) / 100;
+                        // var upload = Math.round((element.upload/1000000000 + Number.EPSILON) * 100) / 100;
+                        // var total = Math.round(((element.download+element.upload)/1000000000 + Number.EPSILON) * 100) / 100;
+                        // return_data[element.month] = {"download": download, "upload": upload, "total": total};
                     });
-                    return_data.identifier = mac;
-                    return_data.daily_download = daily_download === "" ? "0" : daily_download;
-                    return_data.daily_upload = daily_upload === "" ? "0" : daily_upload;
-                    return_data.daily_total = daily_total === "" ? "0" : daily_total;
+
+                    return_data.upload = upload;
+                    return_data.download = download;
+                    return_data.total = total;
+                    return_data.month = month;
+                    // return_data.daily_download = daily_download === "" ? "0" : daily_download;
+                    // return_data.daily_upload = daily_upload === "" ? "0" : daily_upload;
+                    // return_data.daily_total = daily_total === "" ? "0" : daily_total;
                     
                     console.log('The Data from getDataUsage: ', return_data);
                     res.send({user_data: return_data});   
