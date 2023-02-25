@@ -24,7 +24,6 @@ function updateEquipmentData(){
             var this_month_upload = result.user_data.this_month_upload;
             var this_month_download = result.user_data.this_month_download;
 
-            displayChart("today");
             displayTotalChart(this_month_upload, this_month_download, 1000);
         },
         error: function (xhr, status, error) {
@@ -40,7 +39,19 @@ function updateEquipmentData(){
         },
         // jsonpCallback: 'callback', // this is not relevant to the POST anymore
         success: function (result) {
-            console.log(result)
+            var months = result.user_data.month;
+            var upload = result.user_data.upload;
+            var download = result.user_data.download;
+            var total = result.user_data.total;
+
+            months = months.reverse();
+            upload = upload.reverse();
+            download = download.reverse();
+            total = total.reverse();
+
+            console.log(months);
+            var month_to_names = mapMonth(months);
+            displayChart(month_to_names, upload, download, total);
         },
         error: function (xhr, status, error) {
             console.log('Error: ' + error.message);
@@ -74,28 +85,28 @@ function displayTotalChart(upload, download, limit){
     });
 }
 
-function displayChart(dataType){
+function displayChart(graph_label, upload, download, total){
     var ctx = document.getElementById("dataUsage").getContext('2d');
     var myBarChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['Jan', 'Feb', 'March', 'April', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                labels: graph_label,
                 datasets: [{
-                    data: [86, 114, 106, 106, 107, 111, 133, 221, 783, 2478, 234, 234],
-                    label: "Africa",
+                    data: upload,
+                    label: "Upload",
                     borderColor: "#458af7",
                     backgroundColor:'#458af7',
                     fill: false
                 }, {
-                    data: [282, 350, 411, 502, 635, 809, 947, 1402, 3700, 5267, 2343, 334],
-                    label: "Asia",
+                    data: download,
+                    label: "Download",
                     borderColor: "#8e5ea2",
                     fill: true,
                     backgroundColor:'#8e5ea2'
                     
                 }, {
-                    data: [168, 170, 178, 190, 203, 276, 408, 547, 675, 734, 234, 234],
-                    label: "Europe",
+                    data: total,
+                    label: "Total",
                     borderColor: "#3cba9f",
                     fill: false,
                     backgroundColor:'#3cba9f'
@@ -105,8 +116,21 @@ function displayChart(dataType){
             options: {
                 title: {
                     display: true,
-                    text: 'Usage History'
+                    text: 'Usage History (in GB)'
                 }
             }
         });
+}
+
+function mapMonth(month){
+    var month_to_names = [];
+    const monthNames = ['Jan', 'Feb', 'March', 'April', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    month.forEach(mon => {
+        var d = Date.parse(mon + "1, 2023");
+        month_to_names.push(monthNames[mon-1]);
+    });
+
+    console.log(month_to_names);
+    return month_to_names;
 }
