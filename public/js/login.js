@@ -31,3 +31,7 @@ function login(){
     }
 
 }
+
+function createAccount(){
+    console.log("Create Acccount button clicket!")
+}
