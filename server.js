@@ -210,20 +210,12 @@ app.post('/getMonthlyUsageData', function(req, res) {
                         upload.push(Math.round((element.upload/1000000000 + Number.EPSILON) * 100) / 100);
                         total.push(Math.round(((element.download+element.upload)/1000000000 + Number.EPSILON) * 100) / 100);
                         month.push(element.month)
-                        
-                        // var download = Math.round((element.download/1000000000 + Number.EPSILON) * 100) / 100;
-                        // var upload = Math.round((element.upload/1000000000 + Number.EPSILON) * 100) / 100;
-                        // var total = Math.round(((element.download+element.upload)/1000000000 + Number.EPSILON) * 100) / 100;
-                        // return_data[element.month] = {"download": download, "upload": upload, "total": total};
                     });
 
                     return_data.upload = upload;
                     return_data.download = download;
                     return_data.total = total;
                     return_data.month = month;
-                    // return_data.daily_download = daily_download === "" ? "0" : daily_download;
-                    // return_data.daily_upload = daily_upload === "" ? "0" : daily_upload;
-                    // return_data.daily_total = daily_total === "" ? "0" : daily_total;
                     
                     console.log('The Data from getDataUsage: ', return_data);
                     res.send({user_data: return_data});   
@@ -233,7 +225,7 @@ app.post('/getMonthlyUsageData', function(req, res) {
     );
 });
 
-// Handling request for Login
+// Login request
 app.post('/verifyLogin', function(req, res){
     console.log(req.body);
     // res.send(req.body);    // echo the result back
@@ -265,7 +257,11 @@ app.post('/verifyLogin', function(req, res){
     // connection.end();
 });
 
+app.get('/createAccount', function(req, res){
+    res.render('createAccount'); 
+});
 
+// Logout request
 app.get('/logout',(req,res) => {
     req.session.destroy();
     res.redirect('/');
