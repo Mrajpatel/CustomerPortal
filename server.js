@@ -235,7 +235,7 @@ app.post('/verifyLogin', function(req, res){
                             JOIN Equipment ON Equipment.SubscriberId=Subscriber.Id 
                             JOIN PersonalInfo ON Subscriber.PersonalInfoId=PersonalInfo.Id 
                             JOIN Address on Address.Id=PersonalInfo.AddressId 
-                        WHERE PortalLogin=? AND PortalPassword=?`, [req.body.username, req.body.password], 
+                        WHERE PortalLogin=? AND PortalPassword=? GROUP BY SubId`, [req.body.username, req.body.password], 
         function (error, results, fields) {
             if (error){
                 console.log("user not found");

@@ -33,5 +33,13 @@ function login(){
 }
 
 function createAccount(){
-    console.log("Create Acccount button clicket!")
+    var account = document.getElementById("account").value;
+    var password = document.getElementById("password").value;
+    var confirm_password = document.getElementById("confirm_password").value;
+    var usename = document.getElementById("username").value;
+    var email = document.getElementById("email").value;
+
+    if(account.trim() !== "" && password.trim() !== "" && confirm_password.trim() !== "" && usename.trim() !== "" && email.trim() !== ""){
+        console.log("Create Acccount button clicket!")
+    }
 }
