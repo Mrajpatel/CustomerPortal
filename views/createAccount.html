@@ -15,74 +15,74 @@
 
   </head>
   <body>
-    <section class="h-200 gradient-form" style="background-color: #eee;">
-        <div class="container py-5 h-100">
-          <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-xl-10">
-              <div class="card rounded-3 text-black">
-                <div class="row g-0">
-                  <div class="col-lg-6">
-                    <div class="card-body p-md-5 mx-md-4">
-      
-                      <div class="text-center">
-                        <img src="/clearcable.jpg"
-                          style="width: 185px;" alt="Clearcable Connect">
-                        <h4 class="mt-1 mb-5 pb-1"></h4>
-                      </div>
-      
-                      <!-- <form id="pendulum_form" action="/" method="POST"> -->
-                      <form id="pendulum_form" onsubmit="return false;">
-                         <p>Please create a new account</p>
-                         <p id="error_msg" style="display:none; color: red; font-size: 15px;">Incorrect username or password</p>
+    <section class="h-200 gradient-form">
+          <div class="container py-5 h-1000">
+               <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-xl-10">
+                         <div class="card rounded-3 text-black">
+                              <div class="row g-0">
+                              <div class="col-lg-6">
+                                   <div class="card-body p-md-5 mx-md-4">
+                    
+                                   <div class="text-center">
+                                   <img src="/clearcable.jpg"
+                                        style="width: 185px;" alt="Clearcable Connect">
+                                   <h4 class="mt-1 mb-5 pb-1"></h4>
+                                   </div>
+                    
+                                   <!-- <form id="pendulum_form" action="/" method="POST"> -->
+                                   <form id="pendulum_form" onsubmit="return false;">
+                                        <p>Please create a new account</p>
+                                        <p id="error_msg" style="display:none; color: red; font-size: 15px;">Incorrect username or password</p>
+                                        
+                                        <div class="form-outline mb-4">
+                                             <label class="form-label" for="username">Account Number: </label>
+                                             <input id="account" name="account" type="number" class="form-control"
+                                             placeholder="Account#" required/>
+                                        </div>
+
+                                        <div class="form-outline mb-4">
+                                             <label class="form-label" for="username">New Username:</label>
+                                             <input id="username" name="username" class="form-control"
+                                                  placeholder="Account Username" required/>
+                                        </div>
                          
-                         <div class="form-outline mb-4">
-                              <label class="form-label" for="username">Account Number: </label>
-                              <input id="account" name="account" type="number" class="form-control"
-                                  placeholder="Account#" required/>
-                         </div>
+                                        <div class="form-outline mb-4">
+                                             <label class="form-label" for="password">New Password:</label>
+                                             <input type="password" name="password" id="password" class="form-control" required/>
+                                        </div>
 
-                         <div class="form-outline mb-4">
-                              <label class="form-label" for="username">New Username:</label>
-                              <input id="username" name="username" class="form-control"
-                                   placeholder="Account Username" required/>
-                         </div>
-          
-                         <div class="form-outline mb-4">
-                              <label class="form-label" for="password">New Password:</label>
-                              <input type="password" name="password" id="password" class="form-control" required/>
-                         </div>
+                                        <div class="form-outline mb-4">
+                                             <label class="form-label" for="confirm_password">Re-enter New Password:</label>
+                                             <input type="password" name="confirm_password" id="confirm_password" class="form-control" required/>
+                                        </div>
 
-                         <div class="form-outline mb-4">
-                              <label class="form-label" for="confirm_password">Re-enter New Password:</label>
-                              <input type="password" name="confirm_password" id="confirm_password" class="form-control" required/>
-                         </div>
+                                        <div class="form-outline mb-4">
+                                             <label class="form-label" for="email">Email:</label>
+                                             <input type="email" name="email" id="email" class="form-control" placeholder="name@domail.com" required/>
+                                        </div>
 
-                         <div class="form-outline mb-4">
-                              <label class="form-label" for="email">Email:</label>
-                              <input type="email" name="email" id="email" class="form-control" placeholder="name@domail.com" required/>
+                                        <div class="text-center pt-1 mb-5 pb-1">
+                                             <button type="submit" class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" onclick="createAccount();" type="button">Log in</button>
+                                        </div>
+                    
+                                   </form>
+                    
+                                   </div>
+                              </div>
+                                   <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
+                                        <div class="text-white px-3 py-4 p-md-5 mx-md-4">
+                                             <h4 class="mb-4">We are more than just a company</h4>
+                                             <p class="small mb-0">
+                                                  Innovation drives Clearcable. It allows us to deliver optimal solutions using state-of-the-art technology to simplify implementation and reduce operational costs.
+                                             </p>
+                                        </div>
+                                   </div>
+                              </div>
                          </div>
-
-                         <div class="text-center pt-1 mb-5 pb-1">
-                              <button type="submit" class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" onclick="createAccount();" type="button">Log in</button>
-                         </div>
-      
-                    </form>
-      
                     </div>
-                  </div>
-                  <div class="col-lg-6 d-flex align-items-center gradient-custom-2">
-                         <div class="text-white px-3 py-4 p-md-5 mx-md-4">
-                              <h4 class="mb-4">We are more than just a company</h4>
-                              <p class="small mb-0">
-                                   Innovation drives Clearcable. It allows us to deliver optimal solutions using state-of-the-art technology to simplify implementation and reduce operational costs.
-                              </p>
-                         </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+               </div>
           </div>
-        </div>
       </section>
   </body>
 </html>
