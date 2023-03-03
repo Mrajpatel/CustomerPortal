@@ -39,7 +39,33 @@ function createAccount(){
     var usename = document.getElementById("username").value;
     var email = document.getElementById("email").value;
 
-    if(account.trim() !== "" && password.trim() !== "" && confirm_password.trim() !== "" && usename.trim() !== "" && email.trim() !== ""){
-        console.log("Create Acccount button clicket!")
+    if(password.trim() !== confirm_password.trim()){
+        alert("Re-entered password does not match! Please try again")
+    }else{
+        if(account.trim() !== "" && password.trim() !== "" && confirm_password.trim() !== "" && usename.trim() !== "" && email.trim() !== ""){
+            console.log("Create Acccount button clicket!")
+            var client = {};
+            client.account = account;
+            client.password = password;
+            client.usename = usename;
+            client.email = email;
+
+            $.ajax({
+                type: 'POST',
+                data: client,
+                url:"/createAccount",
+                success: function (res) {
+                    console.log(res);
+                    if(res.success){
+                        
+                    }else{
+                        
+                    }
+                },
+                error: function (jqXhr, textStatus, errorMessage) {
+                    console.log(errorMessage)
+                }
+            });
+        }
     }
 }
