@@ -257,6 +257,13 @@ app.post('/verifyLogin', function(req, res){
     // connection.end();
 });
 
+// Login request
+app.post('/createAccount', function(req, res){
+    console.log(req.body);
+    res.send(req.body);    // echo the result back
+
+});
+
 app.get('/createAccount', function(req, res){
     res.render('createAccount'); 
 });
