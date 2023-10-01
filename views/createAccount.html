@@ -3,7 +3,7 @@
   <head>
     <base href="/">
     <!-- <link rel="stylesheet" type="text/css" href="/css/style.css"> -->
-    <title>Login</title>
+    <title>Create Account</title>
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -30,40 +30,39 @@
                                    <h4 class="mt-1 mb-5 pb-1"></h4>
                                    </div>
                     
-                                   <!-- <form id="pendulum_form" action="/" method="POST"> -->
-                                   <form id="pendulum_form" onsubmit="return false;">
+                                   <form id="create_account_form" onsubmit="return false;">
                                         <p>Please create a new account</p>
                                         <p id="error_msg" style="display:none; color: red; font-size: 15px;">Incorrect username or password</p>
                                         
                                         <div class="form-outline mb-4">
                                              <label class="form-label" for="username">Account Number: </label>
                                              <input id="account" name="account" type="number" class="form-control"
-                                             placeholder="Account#" required/>
+                                             placeholder="Account#" value="00624767" required/>
                                         </div>
 
                                         <div class="form-outline mb-4">
                                              <label class="form-label" for="username">New Username:</label>
                                              <input id="username" name="username" class="form-control"
-                                                  placeholder="Account Username" required/>
+                                                  placeholder="Account Username" value="test_user" required/>
                                         </div>
                          
                                         <div class="form-outline mb-4">
                                              <label class="form-label" for="password">New Password:</label>
-                                             <input type="password" name="password" id="password" class="form-control" required/>
+                                             <input type="password" name="password" id="password" class="form-control" value="test123" required/>
                                         </div>
 
                                         <div class="form-outline mb-4">
                                              <label class="form-label" for="confirm_password">Re-enter New Password:</label>
-                                             <input type="password" name="confirm_password" id="confirm_password" class="form-control" required/>
+                                             <input type="password" name="confirm_password" id="confirm_password" class="form-control" value="test123" required/>
                                         </div>
 
-                                        <div class="form-outline mb-4">
+                                        <div class="form-outline mb-4" hidden>
                                              <label class="form-label" for="email">Email:</label>
-                                             <input type="email" name="email" id="email" class="form-control" placeholder="name@domail.com" required/>
+                                             <input type="email" name="email" id="email" class="form-control" placeholder="name@domail.com" />
                                         </div>
 
                                         <div class="text-center pt-1 mb-5 pb-1">
-                                             <button type="submit" class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" onclick="createAccount();" type="button">Log in</button>
+                                             <button type="submit" class="btn btn-primary btn-block fa-lg gradient-custom-2 mb-3" onclick="createAccount();" type="button">Create Account</button>
                                         </div>
                     
                                    </form>
